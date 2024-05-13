@@ -1,0 +1,33 @@
+/* CSS for circle progress bar */
+.circle-progress {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #f3f3f3;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.progress-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    clip: rect(0px, 100px, 100px, 50px); /* Half of the circle */
+}
+
+.progress-inner::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #3498db; /* Change color as needed */
+    border-radius: 50%;
+    transform-origin: center;
+    animation: fill 2s linear forwards;
+}
+
+@keyframes fill {
+    to {
+        transform: rotate(180deg);
+    }
+}
