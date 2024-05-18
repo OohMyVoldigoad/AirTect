@@ -122,7 +122,7 @@
     </div>
     <!-- Tulisan "Apakah Anda Admin?" dan tombol login -->
     <div class="admin-text">Apakah Anda Admin?</div>
-    <a href="/login" class="login-btn">Login</a>
+    <a href="{{ route('loginPage') }}" class="login-btn">Login</a>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>

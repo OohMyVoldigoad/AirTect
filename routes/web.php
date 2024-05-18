@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('guest')->group(function(){
+    Route::get('/', ([PageController::class,'welcomePage']))
+    ->name('welcomePage');
+
+    Route::get('/home', ([PageController::class,'welcomePage']))
+    ->name('homePage');
+    
+    Route::get('/login', ([PageController::class,'showLoginPage']))
+    ->name('loginPage');
+
+    Route::post('/login', [AuthController::class, 'loginProcess'])->name('loginProcess');
 });
 
-Route::get('/login', function () {
-    return view('auth/login');
+Route::middleware('auth')->group(function(){
+    Route::get('/logout', ([AuthController::class, 'logout']))
+    ->name('logout');
+
+    Route::get('/dashboardAdmin',([PageController::class,'dashboardAdmin']))
+    ->name('dashboardAdmin');
 });
