@@ -14,7 +14,6 @@
             justify-content: center;
             align-items: center;
             background-color: #222831;
-            color: #EEEEEE;
         }
 
         #particles-js {
@@ -49,6 +48,26 @@
             font-size: 14px;
             color: #EEEEEE;
             text-align: center;
+        }
+
+        .admin-text {
+            position: absolute;
+            top: 10px;
+            right: 100px;
+            color: #EEEEEE;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #76ABAE;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .circle-container {
@@ -113,7 +132,7 @@
                     if ($station->aqi < 50) {
                         $saranData = App\Models\Saran::where('tipe', 'sehat')->first();
                     } elseif ($station->aqi < 100) {
-                        $saranData = App\Models\Saran::where('tipe', 'danger')->first();
+                        $saranData = App\Models\Saran::where('tipe', 'hati-hati')->first();
                     } else {
                         $saranData = App\Models\Saran::where('tipe', 'danger')->first();
                     }
@@ -140,6 +159,9 @@
             @endif
         </div>
     </div>
+
+    <div class="admin-text">Apakah Anda Admin?</div>
+    <a href="{{ route('loginPage') }}" class="login-btn">Login</a>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
