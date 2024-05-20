@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CreateController;
+use App\Http\Controllers\AQIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +28,16 @@ Route::middleware('guest')->group(function(){
     ->name('loginPage');
 
     Route::post('/login', [AuthController::class, 'loginProcess'])->name('loginProcess');
+
+    Route::post('/fetch-aqi', [AQIController::class, 'fetchAndSaveAQI'])->name('fetchAqi');
+    
+    Route::get('/input', function () {
+        return view('input');
+    })->name('input');
+
+    Route::get('/database', function () {
+        return view('database');
+    })->name('database');
 });
 
 Route::middleware('auth')->group(function(){
@@ -34,4 +46,6 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/dashboardAdmin',([PageController::class,'dashboardAdmin']))
     ->name('dashboardAdmin');
+
+    Route::post('/sarans/store', [CreateController::class, 'storeSaran'])->name('sarans.store');
 });

@@ -3,26 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use App\Models\Aqi;
+use Illuminate\Support\Facades\Http;
 
-class PageController extends Controller
+class AQIController extends Controller
 {
-    public function showLoginPage(){
-        return view('auth/login');
-    }
-
-    public function welcomePage()
+    public function fetchAndSaveAQI(Request $request)
     {
-        $token = '32c5640caacbd1f1945d22860184aaf0db4a380e';
-        $keyword = 'batam';
+        $request->validate([
+            'token' => 'required',
+            'keyword' => 'required',
+        ]);
+
+        $token = $request->input('token');
+        $keyword = $request->input('keyword');
 
         $url = "https://api.waqi.info/v2/search/?token={$token}&keyword={$keyword}";
         $response = Http::get($url);
         $result = $response->json();
 
         if (!isset($result['data']) || $result['status'] != 'ok') {
-            return view('welcome')->withErrors(['message' => 'No results found or error occurred!']);
+            return redirect()->back()->withErrors(['message' => 'No results found or error occurred!']);
         }
 
         $stations = [];
@@ -45,13 +46,6 @@ class PageController extends Controller
             }
         }
 
-        // Mengambil stasiun pertama untuk ditampilkan
-        $station = $stations[0] ?? null;
-
-        return view('welcome', compact('station'));
-    }
-
-    public function dashboardAdmin(){
-        return view("dashboardAdmin");
+        return redirect()->route('database')->with('stations', $stations);
     }
 }
