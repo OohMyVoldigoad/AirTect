@@ -113,7 +113,7 @@
                     if ($station->aqi < 50) {
                         $saranData = App\Models\Saran::where('tipe', 'sehat')->first();
                     } elseif ($station->aqi < 100) {
-                        $saranData = App\Models\Saran::where('tipe', 'hati-hati')->first();
+                        $saranData = App\Models\Saran::where('tipe', 'danger')->first();
                     } else {
                         $saranData = App\Models\Saran::where('tipe', 'danger')->first();
                     }

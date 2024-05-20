@@ -17,12 +17,13 @@ use App\Http\Controllers\AQIController;
 |
 */
 
-Route::middleware('guest')->group(function(){
-    Route::get('/', ([PageController::class,'welcomePage']))
-    ->name('welcomePage');
+Route::get('/', ([PageController::class,'welcomePage']))
+->name('welcomePage');
 
-    Route::get('/home', ([PageController::class,'welcomePage']))
-    ->name('homePage');
+Route::get('/home', ([PageController::class,'welcomePage']))
+->name('homePage');
+
+Route::middleware('guest')->group(function(){
     
     Route::get('/login', ([PageController::class,'showLoginPage']))
     ->name('loginPage');
