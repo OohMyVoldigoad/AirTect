@@ -16,6 +16,10 @@
             background-color: #222831;
         }
 
+        h2 {
+            color: #ffffff;
+        }
+
         #particles-js {
             position: absolute;
             width: 100%;
@@ -34,8 +38,8 @@
 
         .progress-circle {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 200px;
+            height: 180px;
             border-radius: 50%;
             background-color: #76ABAE;
             display: flex;
