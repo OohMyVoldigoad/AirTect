@@ -39,6 +39,8 @@ Route::middleware('guest')->group(function(){
     Route::get('/database', function () {
         return view('database');
     })->name('database');
+
+    Route::get('/sensorreceive', [PageController::class, 'index'])->name('sensorreceive.index');
 });
 
 Route::middleware('auth')->group(function(){

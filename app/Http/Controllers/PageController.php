@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Aqi;
+use App\Models\Sensorreceive;
+use App\Models\Saran;
 
 class PageController extends Controller
 {
@@ -53,5 +55,13 @@ class PageController extends Controller
 
     public function dashboardAdmin(){
         return view("dashboardAdmin");
+    }
+
+    public function index()
+    {
+        $latestData = SensorReceive::latest()->first();
+        $images = Saran::get();
+
+        return view('sensor', compact('latestData', 'images'));
     }
 }
