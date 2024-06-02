@@ -46,8 +46,8 @@
 
         .progress-circle {
             position: relative;
-            height: 180px;
             width: 200px;
+            height: 180px;
             border-radius: 50%;
             background-color: #76ABAE;
             display: flex;
@@ -123,61 +123,59 @@
     <div class="card text-center">
         <div class="title">
             <h2>Air Quality Index</h2>
-            @if(isset($latestData))
+            @if(isset($station))
                 <div class="circle-container">
                     <div id="humidity-progress" class="progress-circle">
-                        <div class="progress-text">Humidity: <span id="humidity-value">{{ $latestData->humidity ?? 'N/A' }}</span> %</div>
+                        <div class="progress-text">Humidity: <span id="humidity-value">{{ $station->humidity ?? 'N/A' }}</span> %</div>
                     </div>
                     <div id="temperature-progress" class="progress-circle">
-                        <div class="progress-text">Temperature: <span id="temperature-value">{{ $latestData->temperatureC ?? 'N/A' }}</span> °C</div>
+                        <div class="progress-text">Temperature: <span id="temperature-value">{{ $station->temperature ?? 'N/A' }}</span> °C</div>
+                    </div>
+                    <div id="atmos-progress" class="progress-circle">
+                        <div class="progress-text">Carbon Monoxide: <span id="atmos-value">{{ $station->atmospheric_pressure ?? 'N/A' }}</span> ppm</div>
                     </div>
                     <div id="aqi-progress" class="progress-circle">
-                        <div class="progress-text">Kadar H2: <span id="aqi-value">{{ $latestData->H2 ?? 'N/A' }}</span></div>
-                    </div>
-                    <div id="aqi-progress" class="progress-circle">
-                        <div class="progress-text">
-                            @if($latestData->CH4 == 0)
-                                Tidak ada gas beracun di sini
-                            @else
-                                Awas terdeteksi gas beracun di sini
-                            @endif
-                        </div>
+                        <div class="progress-text">AQI: <span id="aqi-value">{{ $station->aqi ?? 'N/A' }}</span></div>
                     </div>
                 </div>
-            @endif
-        </div>
-        
-        <!-- Carousel for Images -->
-        <div id="imageCarousel" class="carousel slide mt-4" data-ride="carousel">
-            <div class="carousel-inner">
-                @foreach($images as $image)
-                    <div class="carousel-item @if($loop->first) active @endif">
-                        <img src="{{ asset('storage/images/' . $image->gambar) }}" alt="Image">
+
+                @php
+                    $saranData = null;
+                    if ($station->aqi < 50) {
+                        $saranData = App\Models\Saran::where('tipe', 'sehat')->first();
+                    } elseif ($station->aqi < 100) {
+                        $saranData = App\Models\Saran::where('tipe', 'hati-hati')->first();
+                    } else {
+                        $saranData = App\Models\Saran::where('tipe', 'danger')->first();
+                    }
+                @endphp
+
+                @if($saranData)
+                    <div class="saran">
+                        <div class="alert alert-{{ $saranData->tipe }}">
+                            <strong>Saran:</strong> {{ $saranData->saran }}
+                        </div>
+                        <div>
+                            <img src="{{ asset('storage/images/' . $saranData->gambar) }}" alt="Saran Image">
+                        </div>
                     </div>
-                @endforeach
-            </div>
-            <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+                @else
+                    <div class="saran">
+                        <div class="alert alert-warning">
+                            <strong>Saran:</strong> Data saran tidak tersedia untuk nilai AQI ini.
+                        </div>
+                    </div>
+                @endif
+            @else
+                <p>No data available</p>
+            @endif
         </div>
     </div>
 
     <div class="admin-text">Apakah Anda Admin?</div>
     <a href="{{ route('loginPage') }}" class="login-btn">Login</a>
 
-    <script>
-        setTimeout(function(){
-            location.reload();
-        }, 60000); // 60000 milliseconds = 1 minute
-    </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-KV2H9TE1B8d60Z2ZTg8kVwl5OuPI2FdjC5f1o5g5TILVX4m2D7M5BlSXDh/WtDq6" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         particlesJS("particles-js", {

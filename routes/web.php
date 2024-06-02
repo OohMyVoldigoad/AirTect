@@ -17,10 +17,10 @@ use App\Http\Controllers\AQIController;
 |
 */
 
-Route::get('/', ([PageController::class,'welcomePage']))
-->name('welcomePage');
+Route::get('/', ([PageController::class,'index']))
+->name('index');
 
-Route::get('/home', ([PageController::class,'welcomePage']))
+Route::get('/home', ([PageController::class,'index']))
 ->name('homePage');
 
 Route::middleware('guest')->group(function(){
@@ -40,7 +40,7 @@ Route::middleware('guest')->group(function(){
         return view('database');
     })->name('database');
 
-    Route::get('/sensorreceive', [PageController::class, 'index'])->name('sensorreceive.index');
+    Route::get('/sensorreceive', [PageController::class, 'welcomePage'])->name('sensorreceive.index');
 });
 
 Route::middleware('auth')->group(function(){

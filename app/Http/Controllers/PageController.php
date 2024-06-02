@@ -50,7 +50,7 @@ class PageController extends Controller
         // Mengambil stasiun pertama untuk ditampilkan
         $station = $stations[0] ?? null;
 
-        return view('welcome', compact('station'));
+        return view('sensor', compact('station'));
     }
 
     public function dashboardAdmin(){
@@ -62,6 +62,6 @@ class PageController extends Controller
         $latestData = SensorReceive::latest()->first();
         $images = Saran::get();
 
-        return view('sensor', compact('latestData', 'images'));
+        return view('welcome', compact('latestData', 'images'));
     }
 }
