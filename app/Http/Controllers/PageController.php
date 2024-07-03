@@ -59,9 +59,22 @@ class PageController extends Controller
 
     public function index()
     {
+        // Mengambil data terbaru dari tabel SensorReceive
         $latestData = SensorReceive::latest()->first();
-        $images = Saran::get();
-
+        
+        // Memeriksa nilai CH4 pada data terbaru
+        if ($latestData && $latestData->CH4 == 0) {
+            // Jika nilai CH4 adalah 0, mengambil saran dengan tipe 'sehat'
+            $images = Saran::where('tipe', 'sehat')->get();
+        } elseif ($latestData && $latestData->CH4 == 1) {
+            // Jika nilai CH4 adalah 1, mengambil saran dengan tipe 'danger'
+            $images = Saran::where('tipe', 'danger')->get();
+        } else {
+            // Jika data terbaru tidak ada atau tidak memenuhi kondisi di atas, mengambil semua saran
+            $images = Saran::get();
+        }
+    
         return view('welcome', compact('latestData', 'images'));
     }
+    
 }
